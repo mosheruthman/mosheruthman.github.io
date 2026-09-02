@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>משה חיים רוטמן · תיק עבודות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Assistant:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E8E6E1;
+    --paper-lit:#F2F0EC;
+    --ink:#16181A;
+    --graphite:#5A5F63;
+    --slate:#2E4756;
+    --line:#C5C2BB;
+
+    --hair:0.5px;
+    --thin:1px;
+    --med:2px;
+    --heavy:4px;
+
+    --gut:clamp(20px,4vw,56px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none!important;transition:none!important;}
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Assistant',system-ui,sans-serif;
+    font-weight:300;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mono{font-family:'IBM Plex Mono',monospace;font-weight:400;}
+
+  /* ---------- sheet frame ---------- */
+  .sheet{
+    max-width:1240px;
+    margin:0 auto;
+    padding:0 var(--gut);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    border-bottom:var(--heavy) solid var(--ink);
+    padding:clamp(48px,9vh,110px) 0 22px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    color:var(--graphite);
+    text-transform:uppercase;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    border-bottom:var(--hair) solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:clamp(24px,5vh,52px);
+  }
+  h1{
+    font-family:'Frank Ruhl Libre',Georgia,serif;
+    font-weight:500;
+    font-size:clamp(38px,7.5vw,86px);
+    line-height:1.02;
+    letter-spacing:-.015em;
+  }
+  h1 .sub{
+    display:block;
+    font-size:clamp(15px,2.2vw,25px);
+    font-weight:400;
+    color:var(--slate);
+    margin-top:14px;
+    letter-spacing:0;
+  }
+
+  .thesis{
+    max-width:56ch;
+    margin-top:clamp(26px,5vh,46px);
+    font-size:clamp(16px,1.9vw,20px);
+    color:var(--ink);
+  }
+  .thesis strong{font-weight:600;}
+
+  /* ---------- index ---------- */
+  .index{
+    padding:clamp(30px,6vh,56px) 0;
+    border-bottom:var(--thin) solid var(--line);
+  }
+  .index-head{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    color:var(--graphite);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .index a{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:baseline;
+    gap:14px;
+    padding:11px 0;
+    border-bottom:var(--hair) solid var(--line);
+    text-decoration:none;
+    color:var(--ink);
+    transition:background .18s,padding .18s;
+  }
+  .index a:hover,.index a:focus-visible{
+    background:var(--paper-lit);
+    padding-inline:10px;
+  }
+  .index .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--slate);
+  }
+  .index .nm{
+    font-family:'Frank Ruhl Libre',serif;
+    font-size:clamp(19px,2.6vw,27px);
+    font-weight:500;
+  }
+  .index .yr{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--graphite);
+  }
+
+  /* ---------- project ---------- */
+  .project{
+    padding:clamp(56px,11vh,120px) 0;
+    border-bottom:var(--med) solid var(--ink);
+  }
+  .project-top{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(22px,4vw,44px);
+    margin-bottom:clamp(30px,5vh,52px);
+  }
+  @media(min-width:900px){
+    .project-top{grid-template-columns:1.5fr 1fr;}
+  }
+
+  .p-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--slate);
+    margin-bottom:12px;
+  }
+  h2{
+    font-family:'Frank Ruhl Libre',serif;
+    font-weight:500;
+    font-size:clamp(30px,5.2vw,58px);
+    line-height:1.08;
+    letter-spacing:-.01em;
+  }
+  .p-desc{
+    margin-top:18px;
+    max-width:48ch;
+    font-size:clamp(15px,1.7vw,17.5px);
+  }
+
+  /* title block — the drawing-sheet signature */
+  .titleblock{
+    border:var(--thin) solid var(--ink);
+    align-self:start;
+  }
+  .titleblock .tb-head{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    padding:8px 12px;
+    border-bottom:var(--thin) solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .titleblock dl{
+    display:grid;
+    grid-template-columns:auto 1fr;
+  }
+  .titleblock dt,.titleblock dd{
+    padding:9px 12px;
+    border-bottom:var(--hair) solid var(--line);
+    font-size:13px;
+  }
+  .titleblock dt{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    border-inline-end:var(--hair) solid var(--line);
+    white-space:nowrap;
+  }
+  .titleblock dd{font-weight:400;}
+  .titleblock dl>*:nth-last-child(-n+2){border-bottom:none;}
+
+  /* bands */
+  .band{margin-top:clamp(30px,5vh,54px);}
+  .band-label{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    border-bottom:var(--thin) solid var(--ink);
+    padding-bottom:7px;
+    margin-bottom:16px;
+  }
+  .band-label span:last-child{
+    margin-inline-start:auto;
+    color:var(--line);
+  }
+
+  .grid{
+    display:grid;
+    gap:10px;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  }
+  .grid.wide{grid-template-columns:1fr;}
+  @media(min-width:760px){
+    .grid.wide{grid-template-columns:2fr 1fr;}
+  }
+
+  figure{
+    position:relative;
+    margin:0;
+    background:var(--paper-lit);
+    border:var(--hair) solid var(--line);
+    aspect-ratio:4/3;
+    overflow:hidden;
+  }
+  figure.tall{aspect-ratio:3/4;}
+  figure.panorama{aspect-ratio:16/9;}
+  figure img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  figure .slot{
+    position:absolute;inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    text-align:center;
+    padding:16px;
+    color:var(--graphite);
+    background:
+      repeating-linear-gradient(45deg,transparent 0 11px,rgba(46,71,86,.05) 11px 22px),
+      var(--paper-lit);
+  }
+  figure .slot .fn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--slate);
+    word-break:break-all;
+  }
+  figure .slot .what{font-size:13px;}
+
+  /* photo + drawing side by side; ratio chosen so both end level */
+  .grid.levi-pair{grid-template-columns:1fr;}
+  @media(min-width:760px){
+    .grid.levi-pair{grid-template-columns:1fr 2.37fr;align-items:start;}
+  }
+
+  /* ---------- plans: fixed 2 x 2 ---------- */
+  .grid.plans2x2{grid-template-columns:1fr;}
+  @media(min-width:700px){
+    .grid.plans2x2{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* a drawing is clickable: cursor + a quiet hover cue */
+  img[data-zoom]{cursor:zoom-in;}
+  figure:has(img[data-zoom]){transition:border-color .18s;}
+  figure:has(img[data-zoom]):hover{border-color:var(--slate);}
+
+  /* ---------- lightbox ---------- */
+  .lb{
+    position:fixed;inset:0;z-index:90;
+    display:none;
+    align-items:center;justify-content:center;
+    flex-direction:column;gap:14px;
+    padding:clamp(14px,3vw,40px);
+    background:rgba(232,230,225,.985);   /* paper — letterbox bars blend in */
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  }
+  .lb.open{display:flex;}
+  .lb img{
+    max-width:100%;
+    max-height:calc(100vh - 130px);
+    object-fit:contain;
+    border:var(--hair) solid var(--line);
+    background:var(--paper-lit);
+  }
+  .lb-bar{
+    display:flex;align-items:baseline;gap:16px;
+    width:100%;max-width:1400px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--graphite);
+    border-bottom:var(--thin) solid var(--ink);
+    padding-bottom:8px;
+  }
+  .lb-bar .lb-x{
+    margin-inline-start:auto;
+    background:none;border:none;padding:2px 4px;
+    font:inherit;color:var(--slate);cursor:pointer;
+    letter-spacing:.14em;
+  }
+  .lb-bar .lb-x:hover{color:var(--ink);}
+  .lb-hint{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--line);
+  }
+  body.lb-lock{overflow:hidden;}
+
+  /* ---------- contact ---------- */
+  .contact{
+    padding:clamp(56px,11vh,120px) 0 clamp(70px,13vh,140px);
+  }
+  .contact h2{margin-bottom:26px;}
+  .clines{
+    display:grid;
+    gap:0;
+    max-width:520px;
+    border-top:var(--thin) solid var(--ink);
+  }
+  .clines a,.clines span{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:16px;
+    padding:13px 0;
+    border-bottom:var(--hair) solid var(--line);
+    text-decoration:none;
+    color:var(--ink);
+    font-size:16px;
+  }
+  .clines a:hover,.clines a:focus-visible{color:var(--slate);}
+  .clines .k{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    align-self:center;
+  }
+
+  footer{
+    border-top:var(--heavy) solid var(--ink);
+    padding:18px 0 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  a:focus-visible{outline:var(--med) solid var(--slate);outline-offset:3px;}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease;}
+  .rv.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="eyebrow">
+      <span>תיק עבודות</span>
+      <span class="mono">מעלה עמוס · ישראל</span>
+    </div>
+    <h1>
+      משה חיים רוטמן
+      <span class="sub">הנדסאי אדריכלות ועיצוב פנים · ליווי ביצוע</span>
+    </h1>
+    <p class="thesis">
+      תכנון שמגיע עד הסוף. את הפרויקטים שכאן <strong>תכננתי ושרטטתי, וליוויתי בשטח עד המסירה</strong> — מהסקיצה הראשונה ועד הפרט שמבוצע נכון. העבודה מול קבלנים ונגרים היא חלק מהתכנון, לא שלב שאחריו.
+    </p>
+  </header>
+
+  <nav class="index">
+    <div class="index-head">תוכן</div>
+    <a href="#p01"><span class="num">01</span><span class="nm">שיפוץ, הרחבה ויחידת אירוח — בית פרטי</span><span class="yr">מעלה עמוס</span></a>
+    <a href="#p02"><span class="num">02</span><span class="nm">מלון בוטיק — פרויקט גמר</span><span class="yr">ירושלים</span></a>
+    <a href="#p03"><span class="num">03</span><span class="nm">יחידת רחצה בחדר הורים</span><span class="yr">משפחת לוי</span></a>
+  </nav>
+
+  <!-- 01 -->
+  <section class="project rv" id="p01">
+    <div class="project-top">
+      <div>
+        <div class="p-num">פרויקט 01</div>
+        <h2>שיפוץ, הרחבה<br>ויחידת אירוח</h2>
+        <p class="p-desc">
+          שיפוץ מקיף של בית מגורים קיים, שתוכנן וליווה על ידי מהסקיצה ועד המסירה. הפרויקט נבנה משלושה חלקים שתוכננו כמקשה אחת: חידוש הבית עצמו, הרחבת חדר השינה והוספת יחידת רחצה, והקמת יחידת אירוח זוגית עם מתחם ספא — שהיום פעילה להשכרה.
+        </p>
+        <p class="p-desc">
+          האתגר המרכזי היה תכנון שמנצל כל מטר בשטח נתון: ההרחבה של חדר השינה נגסה משטח יחידת האירוח, ולכן כל חלוקה פנימית נבחנה מחדש. ההחלטה שהובילה את התכנון הייתה שמירה על קווים ישרים וברורים לאורך כל החלוקה החדשה — מה שאיפשר לשלב ארון בנוי ויחידת רחצה בלי לפגוע בנוחות השימוש היומיומית.
+        </p>
+      </div>
+
+      <div class="titleblock">
+        <div class="tb-head">פרטי פרויקט</div>
+        <dl>
+          <dt>מיקום</dt><dd>מעלה עמוס</dd>
+          <dt>תוכנית</dt><dd>שיפוץ, הרחבה ויחידת אירוח</dd>
+          <dt>שטח</dt><dd>כ-110 מ״ר</dd>
+          <dt>שנה</dt><dd>2026</dd>
+          <dt>תפקיד</dt><dd>תכנון, שרטוט וליווי ביצוע</dd>
+          <dt>סטטוס</dt><dd>הושלם · יחידת האירוח פעילה</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- חלק א — יחידת האירוח -->
+    <div class="band">
+      <div class="band-label"><span>חלק א · יחידת אירוח עם ספא</span><span>מבוצע</span></div>
+      <p class="p-desc" style="margin-bottom:16px">
+        יחידת אירוח לזוגות עם מתחם ספא שהוא חלק מהיחידה ולא תוספת: ג׳קוזי, מקלחת חוץ, סאונה יבשה ומטבחון. התכנון התמקד בתחושת מרחב בשטח מצומצם — קשת מוארת מעל המיטה שמגדירה את אזור השינה, וחומרים טבעיים שחוזרים לאורך כל היחידה.
+      </p>
+      <div class="grid">
+        <figure class="tall"><img src="bamidbar-01.jpg" alt="יחידת אירוח — המיטה והקשת" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">המיטה והקשת המוארת</span><span class="fn">bamidbar-01.jpg</span></div></figure>
+        <figure class="tall"><img src="bamidbar-02.jpg" alt="יחידת אירוח — ג׳קוזי" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">ג׳קוזי</span><span class="fn">bamidbar-02.jpg</span></div></figure>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <figure class="tall"><img src="bamidbar-03.jpg" alt="יחידת אירוח — מקלחת חוץ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">מקלחת חוץ</span><span class="fn">bamidbar-03.jpg</span></div></figure>
+        <figure class="tall"><img src="bamidbar-04.jpg" alt="יחידת אירוח — מטבחון" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">מטבחון</span><span class="fn">bamidbar-04.jpg</span></div></figure>
+        <figure class="tall"><img src="bamidbar-06.jpg" alt="יחידת אירוח — פרט" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">פרט / חומר</span><span class="fn">bamidbar-06.jpg</span></div></figure>
+      </div>
+    </div>
+
+    <!-- חלק ב — הבית -->
+    <div class="band">
+      <div class="band-label"><span>חלק ב · חידוש הבית</span><span>תיאור</span></div>
+      <p class="p-desc" style="margin-bottom:16px">
+        החלפת ריצוף בכל הבית, הנמכת תקרת גבס עם תכנון תאורה, והוספת אי מטבח מרכזי שמארגן את המרחב — המטבח הקיים עצמו נשאר ללא שינוי. פינת הישיבה קיבלה ארון ספרים בנוי שממשיך את קו תקרת הגבס.
+      </p>
+    </div>
+
+    <!-- חלק ג — הרחבת חדר השינה -->
+    <div class="band">
+      <div class="band-label"><span>חלק ג · הרחבת חדר השינה</span><span>תיאור</span></div>
+      <p class="p-desc" style="margin-bottom:16px">
+        כדי לפנות מקום לארון גדול וליחידת רחצה, החדר הורחב על חשבון שטח מיחידת האירוח. החלוקה החדשה תוכננה בקווים ישרים, כך שהחלל נשאר נוח לשימוש ולא רק פותר את בעיית האחסון.
+      </p>
+    </div>
+
+    <!-- תהליך הביצוע — יחידת האירוח -->
+    <div class="band">
+      <div class="band-label"><span>תהליך · יחידת האירוח</span><span>בזמן ביצוע</span></div>
+      <p class="p-desc" style="margin-bottom:16px">
+        תיעוד משלבי הביצוע — מהשלד ועד הגימור. הליווי בשטח כלל עבודה מול קבלנים ונגרים ופתרון פרטים תוך כדי בנייה.
+      </p>
+      <div class="grid">
+        <figure><img src="process-01.jpg" alt="יחידת האירוח — בזמן ביצוע" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">שלד / בנייה</span><span class="fn">process-01.jpg</span></div></figure>
+        <figure><img src="process-02.jpg" alt="יחידת האירוח — בזמן ביצוע" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">מתחם הספא בבנייה</span><span class="fn">process-02.jpg</span></div></figure>
+        <figure><img src="process-03.jpg" alt="יחידת האירוח — בזמן ביצוע" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">גמר / פרט בביצוע</span><span class="fn">process-03.jpg</span></div></figure>
+      </div>
+    </div>
+
+    <!-- תוכניות -->
+    <div class="band">
+      <div class="band-label"><span>תוכניות</span><span>שרטוט</span></div>
+      <div class="grid plans2x2">
+        <figure class="panorama"><img src="plan-01.jpg" alt="תוכנית קומה — מצב מוצע" data-zoom data-cap="תוכנית קומה — מצב מוצע · 1:50" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית קומה — מצב מוצע</span><span class="fn">plan-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="plan-spa-01.jpg" alt="פריסות — מתחם הספא" data-zoom data-cap="פריסות — מתחם הספא · 1:50" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">פריסות — מתחם הספא</span><span class="fn">plan-spa-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="plan-elec-01.jpg" alt="תוכנית חשמל — קומת קרקע" data-zoom data-cap="תוכנית חשמל — קומת קרקע · 1:50" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית חשמל</span><span class="fn">plan-elec-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="plan-plumb-01.jpg" alt="תוכנית אינסטלציה" data-zoom data-cap="תוכנית אינסטלציה · 1:50" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית אינסטלציה</span><span class="fn">plan-plumb-01.jpg</span></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="project rv" id="p02">
+    <div class="project-top">
+      <div>
+        <div class="p-num">פרויקט 02</div>
+        <h2>מלון בוטיק<br>רחוב הנביאים, ירושלים</h2>
+        <p class="p-desc">
+          פרויקט גמר בהיקף של כ-1,000 מ״ר: מלון בוטיק הכולל חדרי אירוח, לובי, חדר אוכל ולאונג׳. האתגר התכנוני היה יצירת דיאלוג בין אדריכלות עכשווית לבין המבנים ההיסטוריים בסביבת רחוב הנביאים.
+        </p>
+        <p class="p-desc">
+          הפתרון נשען על שימוש בשפה אדריכלית אוריינטלית והיסטורית של ירושלים — קשתות, אבן וחלוקת פתחים — ותרגומה לשפה עכשווית, כך שהמבנה משתלב ברקמה הקיימת בלי לחקות אותה.
+        </p>
+      </div>
+
+      <div class="titleblock">
+        <div class="tb-head">פרטי פרויקט</div>
+        <dl>
+          <dt>מיקום</dt><dd>רחוב הנביאים, ירושלים</dd>
+          <dt>תוכנית</dt><dd>מלון בוטיק</dd>
+          <dt>שטח</dt><dd>כ-1,000 מ״ר</dd>
+          <dt>שנה</dt><dd>2026</dd>
+          <dt>מסגרת</dt><dd>פרויקט גמר · המרכז החרדי</dd>
+          <dt>תפקיד</dt><dd>תכנון ושרטוט מלא</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="band-label"><span>הדמיות</span><span>תלת־ממד</span></div>
+      <div class="grid">
+        <figure class="panorama"><img src="gmar-render-01.jpg" alt="הדמיה — לובי / חלל פנים" data-zoom data-cap="הדמיה — לובי / חלל פנים" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">הדמיה — לובי / חלל פנים</span><span class="fn">gmar-render-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="gmar-render-02.jpg" alt="הדמיות חוץ — ארבעה מבטים" data-zoom data-cap="הדמיות חוץ — ארבעה מבטים" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">הדמיות חוץ — ארבעה מבטים</span><span class="fn">gmar-render-02.jpg</span></div></figure>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <figure><img src="gmar-render-03.jpg" alt="מלון בוטיק — הדמיה חדר" data-zoom data-cap="הדמיה — חדר אירוח" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">הדמיה — חדר אירוח</span><span class="fn">gmar-render-03.jpg</span></div></figure>
+        <figure><img src="gmar-render-04.jpg" alt="מלון בוטיק — הדמיה" data-zoom data-cap="הדמיה — חדר אוכל / לאונג׳" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">הדמיה — חדר אוכל / לאונג׳</span><span class="fn">gmar-render-04.jpg</span></div></figure>
+        <figure><img src="gmar-render-05.jpg" alt="מלון בוטיק — הדמיה" data-zoom data-cap="הדמיה — פרט" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">הדמיה — פרט</span><span class="fn">gmar-render-05.jpg</span></div></figure>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="band-label"><span>תוכניות</span><span>שרטוט</span></div>
+      <div class="grid">
+        <figure class="panorama"><img src="gmar-plan-01.jpg" alt="מלון בוטיק — תוכנית קומת קרקע" data-zoom data-cap="תוכנית קומת קרקע" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית קומת קרקע</span><span class="fn">gmar-plan-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="gmar-plan-02.jpg" alt="מלון בוטיק — תוכנית קומה טיפוסית" data-zoom data-cap="תוכנית קומה טיפוסית" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית קומה טיפוסית</span><span class="fn">gmar-plan-02.jpg</span></div></figure>
+        <figure class="panorama"><img src="gmar-section-01.jpg" alt="מלון בוטיק — חתך" data-zoom data-cap="חתך" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">חתך</span><span class="fn">gmar-section-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="gmar-elevation-01.jpg" alt="מלון בוטיק — חזית" data-zoom data-cap="חזית" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">חזית</span><span class="fn">gmar-elevation-01.jpg</span></div></figure>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="band-label"><span>תהליך</span><span>סקיצות ותרשימים</span></div>
+      <div class="grid">
+        <figure><img src="gmar-sk-01.jpg" alt="מלון בוטיק — סקיצה" data-zoom data-cap="סקיצת רעיון" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">סקיצת רעיון</span><span class="fn">gmar-sk-01.jpg</span></div></figure>
+        <figure><img src="gmar-sk-02.jpg" alt="מלון בוטיק — תרשים סביבה" data-zoom data-cap="תרשים סביבה" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תרשים סביבה</span><span class="fn">gmar-sk-02.jpg</span></div></figure>
+        <figure><img src="gmar-sk-03.jpg" alt="מלון בוטיק — תרשים" data-zoom data-cap="תרשים תוכניתי" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תרשים תוכניתי</span><span class="fn">gmar-sk-03.jpg</span></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="project rv" id="p03">
+    <div class="project-top">
+      <div>
+        <div class="p-num">פרויקט 03</div>
+        <h2>יחידת רחצה<br>בחדר הורים</h2>
+        <p class="p-desc">
+          בתוך חדר הורים קיים נדרש לשלב יחידת רחצה עצמאית — מקלחת, כיור ושירותים — בלי לפגוע בפרופורציות החדר. הפתרון: תכנון מדויק על שטח של 3.5 מ״ר בלבד, שממקם את כל האלמנטים בפינה אחת ויוצר הפרדה ברורה בין אזור השינה לאזור הרחצה.
+        </p>
+      </div>
+
+      <div class="titleblock">
+        <div class="tb-head">פרטי פרויקט</div>
+        <dl>
+          <dt>לקוח</dt><dd>משפחת לוי</dd>
+          <dt>תוכנית</dt><dd>יחידת רחצה בחדר הורים</dd>
+          <dt>שטח</dt><dd>3.5 מ״ר</dd>
+          <dt>שנה</dt><dd>2026</dd>
+          <dt>תפקיד</dt><dd>תכנון ושרטוט</dd>
+          <dt>סטטוס</dt><dd>הושלם ופעיל</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="band-label"><span>מבוצע ותוכנית</span><span>צילום · שרטוט</span></div>
+      <div class="grid levi-pair">
+        <figure class="tall"><img src="levi-01.jpg" alt="יחידת רחצה — מבט כללי" data-zoom data-cap="מבט כללי" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">מבט כללי</span><span class="fn">levi-01.jpg</span></div></figure>
+        <figure class="panorama"><img src="levi-plan-01.jpg" alt="יחידת רחצה — תוכנית" data-zoom data-cap="תוכנית — חלוקה, פריסות ותקרה" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="slot" style="display:none"><span class="what">תוכנית</span><span class="fn">levi-plan-01.jpg</span></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact rv">
+    <h2>יצירת קשר</h2>
+    <div class="clines">
+      <a href="tel:+972528530280"><span class="k">נייד</span><span>052-8530280</span></a>
+      <a href="tel:+97225481990"><span class="k">קווי</span><span>02-5481990</span></a>
+      <a href="mailto:m0528530280@gmail.com"><span class="k">מייל</span><span>m0528530280@gmail.com</span></a>
+      <span><span class="k">אזור</span><span>מעלה עמוס · ירושלים והסביבה</span></span>
+    </div>
+  </section>
+
+  <footer>
+    <span>משה חיים רוטמן · תיק עבודות</span>
+    <span class="mono">2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.08});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // show slot placeholders for images that never load
+  document.querySelectorAll('figure img').forEach(img=>{
+    if(img.complete && img.naturalWidth===0){
+      img.style.display='none';
+      img.nextElementSibling.style.display='flex';
+    }
+  });
+
+  /* ---------- lightbox: click a drawing to open it full screen ---------- */
+  (function(){
+    const box = document.createElement('div');
+    box.className = 'lb';
+    box.setAttribute('role','dialog');
+    box.setAttribute('aria-modal','true');
+    box.hidden = true;
+    box.innerHTML =
+      '<div class="lb-bar"><span class="lb-cap"></span>'+
+      '<button type="button" class="lb-x" aria-label="סגירה">סגירה ✕</button></div>'+
+      '<img alt="">'+
+      '<div class="lb-hint">לחיצה מחוץ לשרטוט או ESC לסגירה</div>';
+    document.body.appendChild(box);
+
+    const bigImg = box.querySelector('img');
+    const cap    = box.querySelector('.lb-cap');
+    const closeB = box.querySelector('.lb-x');
+    let lastFocus = null;
+
+    function open(src, caption, alt){
+      lastFocus = document.activeElement;
+      bigImg.src = src;
+      bigImg.alt = alt || caption || '';
+      cap.textContent = caption || '';
+      box.hidden = false;
+      box.classList.add('open');
+      document.body.classList.add('lb-lock');
+      closeB.focus();
+    }
+    function close(){
+      box.classList.remove('open');
+      box.hidden = true;
+      document.body.classList.remove('lb-lock');
+      bigImg.removeAttribute('src');
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.querySelectorAll('img[data-zoom]').forEach(img=>{
+      img.tabIndex = 0;
+      img.setAttribute('role','button');
+      img.addEventListener('click', ()=> open(img.currentSrc || img.src, img.dataset.cap, img.alt));
+      img.addEventListener('keydown', e=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          open(img.currentSrc || img.src, img.dataset.cap, img.alt);
+        }
+      });
+    });
+
+    closeB.addEventListener('click', close);
+    box.addEventListener('click', e=>{ if(e.target === box) close(); });
+    document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && box.classList.contains('open')) close(); });
+  })();
+</script>
+</body>
+</html>
