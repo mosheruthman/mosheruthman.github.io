@@ -727,7 +727,7 @@
     document.querySelectorAll('img[data-zoom]').forEach(img=>{
       img.tabIndex = 0;
       img.setAttribute('role','button');
-      const allowZoom = img.closest('#p02') !== null;
+      const allowZoom = img.closest('#p01, #p02') !== null;
       img.addEventListener('click', ()=> open(img.currentSrc || img.src, img.dataset.cap, img.alt, allowZoom));
       img.addEventListener('keydown', e=>{
         if(e.key === 'Enter' || e.key === ' '){
