@@ -332,6 +332,17 @@
     color:var(--line);
   }
   body.lb-lock{overflow:hidden;}
+  .lb-stage{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;direction:ltr;}
+  .lb-stage img{flex-shrink:0;transform-origin:center;user-select:none;-webkit-user-drag:none;}
+  .lb.zoomable .lb-stage{touch-action:none;cursor:grab;}
+  .lb.zoomable .lb-stage:active{cursor:grabbing;}
+  .lb-tools{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+  .lb-tools[hidden]{display:none;}
+  .lb-tools button{font:inherit;padding:8px 14px;min-height:44px;border:1px solid var(--line);background:var(--paper-lit);color:var(--ink);cursor:pointer;}
+  .lb-tools output{direction:ltr;unicode-bidi:isolate;min-width:55px;text-align:center;}
+  .lb-cap{letter-spacing:normal;}
+  .lb-hint{color:var(--graphite);letter-spacing:normal;text-align:center;}
+  @media(max-width:600px){.lb{padding:12px;gap:10px;}.lb-bar{font-size:12px;letter-spacing:normal;}.lb img{max-height:calc(100dvh - 210px);}.lb-tools button{padding:8px 12px;}}
 
   /* ---------- contact ---------- */
   .contact{
@@ -630,17 +641,72 @@
     box.innerHTML =
       '<div class="lb-bar"><span class="lb-cap"></span>'+
       '<button type="button" class="lb-x" aria-label="סגירה">סגירה ✕</button></div>'+
-      '<img alt="">'+
+      '<div class="lb-stage"><img alt="" draggable="false"></div>'+
+      '<div class="lb-tools" hidden><button type="button" data-action="in" aria-label="הגדלה">הגדלה +</button><output aria-label="רמת הגדלה">100%</output><button type="button" data-action="out" aria-label="הקטנה">הקטנה −</button><button type="button" data-action="reset">התאמה למסך</button></div>'+
       '<div class="lb-hint">לחיצה מחוץ לשרטוט או ESC לסגירה</div>';
     document.body.appendChild(box);
 
     const bigImg = box.querySelector('img');
     const cap    = box.querySelector('.lb-cap');
     const closeB = box.querySelector('.lb-x');
+    const stage = box.querySelector('.lb-stage');
+    const tools = box.querySelector('.lb-tools');
+    const level = tools.querySelector('output');
+    const hint = box.querySelector('.lb-hint');
+    const pointers = new Map();
+    let scale = 1, panX = 0, panY = 0, zoomable = false;
+    function render(){
+      bigImg.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      level.value = Math.round(scale * 100) + '%';
+      tools.querySelector('[data-action="in"]').disabled = scale >= 6;
+      tools.querySelector('[data-action="out"]').disabled = scale <= 1;
+    }
+    function zoom(value){
+      scale = Math.max(1, Math.min(6, value));
+      if(scale === 1) panX = panY = 0;
+      render();
+    }
+    tools.addEventListener('click', e=>{
+      const action = e.target.dataset.action;
+      if(action === 'in') zoom(scale * 1.4);
+      if(action === 'out') zoom(scale / 1.4);
+      if(action === 'reset'){panX = panY = 0;zoom(1);}
+    });
+    stage.addEventListener('wheel', e=>{
+      if(!zoomable) return;
+      e.preventDefault();
+      zoom(scale * (e.deltaY < 0 ? 1.15 : 1 / 1.15));
+    }, {passive:false});
+    stage.addEventListener('pointerdown', e=>{
+      if(!zoomable) return;
+      e.preventDefault();
+      stage.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    });
+    stage.addEventListener('pointermove', e=>{
+      if(!pointers.has(e.pointerId)) return;
+      const oldPoints = Array.from(pointers.values());
+      const previous = pointers.get(e.pointerId);
+      pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(pointers.size === 2){
+        const newPoints = Array.from(pointers.values());
+        const distance = p=>Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);
+        const before = distance(oldPoints);
+        if(before > 0) zoom(scale * distance(newPoints) / before);
+      }else if(pointers.size === 1 && scale > 1){
+        panX += e.clientX - previous.x;panY += e.clientY - previous.y;render();
+      }
+    });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(type=>stage.addEventListener(type,e=>pointers.delete(e.pointerId)));
     let lastFocus = null;
 
-    function open(src, caption, alt){
+    function open(src, caption, alt, allowZoom){
       lastFocus = document.activeElement;
+      zoomable = allowZoom;
+      box.classList.toggle('zoomable', zoomable);
+      tools.hidden = !zoomable;
+      pointers.clear();panX = panY = 0;zoom(1);
+      hint.textContent = zoomable ? 'הגדלה בכפתורים, בגלגלת או בצביטה · גרירה להזזה · מקש Escape לסגירה' : 'לחיצה מחוץ לשרטוט או ESC לסגירה';
       bigImg.src = src;
       bigImg.alt = alt || caption || '';
       cap.textContent = caption || '';
@@ -654,24 +720,42 @@
       box.hidden = true;
       document.body.classList.remove('lb-lock');
       bigImg.removeAttribute('src');
+      pointers.clear();
       if(lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
     document.querySelectorAll('img[data-zoom]').forEach(img=>{
       img.tabIndex = 0;
       img.setAttribute('role','button');
-      img.addEventListener('click', ()=> open(img.currentSrc || img.src, img.dataset.cap, img.alt));
+      const allowZoom = img.closest('#p02') !== null;
+      img.addEventListener('click', ()=> open(img.currentSrc || img.src, img.dataset.cap, img.alt, allowZoom));
       img.addEventListener('keydown', e=>{
         if(e.key === 'Enter' || e.key === ' '){
           e.preventDefault();
-          open(img.currentSrc || img.src, img.dataset.cap, img.alt);
+          open(img.currentSrc || img.src, img.dataset.cap, img.alt, allowZoom);
         }
       });
     });
 
     closeB.addEventListener('click', close);
-    box.addEventListener('click', e=>{ if(e.target === box) close(); });
-    document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && box.classList.contains('open')) close(); });
+    box.addEventListener('click', e=>{ if(e.target === box || (!zoomable && e.target === stage)) close(); });
+    document.addEventListener('keydown', e=>{
+      if(!box.classList.contains('open')) return;
+      if(e.key === 'Escape') close();
+      if(zoomable && ['+','=','-','0'].includes(e.key)){
+        e.preventDefault();
+        if(e.key === '-') zoom(scale / 1.4);
+        else if(e.key === '0'){panX = panY = 0;zoom(1);}
+        else zoom(scale * 1.4);
+      }
+      if(e.key === 'Tab'){
+        const buttons = Array.from(box.querySelectorAll('button')).filter(b=>!b.disabled && !b.closest('[hidden]'));
+        const first = buttons[0], last = buttons[buttons.length-1];
+        if(e.shiftKey && document.activeElement === first){e.preventDefault();last.focus();}
+        else if(!e.shiftKey && document.activeElement === last){e.preventDefault();first.focus();}
+      }
+    });
+    window.addEventListener('resize', ()=>{if(box.classList.contains('open')){panX = panY = 0;zoom(1);}});
   })();
 </script>
 </body>
